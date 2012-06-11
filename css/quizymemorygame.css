@@ -1,12 +1,15 @@
 /*
-
+ CSS for Memogry game plugin
+ Author: Yane Frenski
 */
 
+/* the stle for the wrapper element */
 .quizy-memorygame{
   position:relative;
   width:100%;
 }
 
+/* styles of the card to show */
 .quizy-memorygame .mgcard-show{
   width:156px;
   height:156px;
@@ -30,6 +33,7 @@
   background:url('img/quizy-mg-item-top.png');
 }
 
+/* styles for the popup notifications */
 .quizy-mg-notification-fly{
   width:90px;
   height:90px;
@@ -49,6 +53,7 @@
   background:url('img/quizy-mg-notif-pos.png');
 }
 
+/* styles for the game summary */
 #quizy-game-summary {
   width:300px;
   height:120px;

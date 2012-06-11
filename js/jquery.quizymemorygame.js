@@ -304,6 +304,8 @@ if(!Array.indexOf){
   
     * itemWidth:         The width of the card in pixels.
     * itemHeight:        The width of the card in pixels.
+                         Don't forget to change the style of the element in
+                         the CSS if you change one of this two paremeters
     * itemsMargin:       The right and bottom margin of the element defining
                          the margin between the cards.
     * colCount:          In how many columns the plugin should arrange the cards
