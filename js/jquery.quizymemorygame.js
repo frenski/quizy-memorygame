@@ -103,10 +103,10 @@ if(!Array.indexOf){
             if(opts.gameSummary){
               $('div#quizy-game-summary').
                   children('div#gs-column2').
-                  html(numTotalClicks+'<br>'+opts.textSummaryClicks);
+                  html(numSeconds+'<br>'+opts.textSummaryTime);
               $('div#quizy-game-summary').
                   children('div#gs-column3').
-                  html(numSeconds+'<br>'+opts.textSummaryTime);
+                  html(numTotalClicks+'<br>'+opts.textSummaryClicks);
               $('div#quizy-game-summary').delay(2000).fadeIn(1000);
             }
             // if is set makes an AJAX call and sends the the necessary params
