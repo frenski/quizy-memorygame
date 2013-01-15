@@ -59,7 +59,7 @@ if(!Array.indexOf){
     var w = opts.itemWidth;
     var h = opts.itemHeight;
     var m = opts.itemsMargin;
-    var rowNum = Math.round(itemsNum/opts.colCount);
+    var rowNum = Math.ceil(itemsNum/opts.colCount);
     
     
     // FUNCTIONS **************************************************************
