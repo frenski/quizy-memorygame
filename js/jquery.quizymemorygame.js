@@ -215,7 +215,7 @@ if(!Array.indexOf){
     $(this).children('ul').hide();
     
     // makes the div wrapper big enough
-    $(this).css({height:rowNum*(w+m)+'px'});
+    $(this).css({height:rowNum*(h+m)+'px'});
     
     // creates an array for randomising the items
     var ranArr = Array();
