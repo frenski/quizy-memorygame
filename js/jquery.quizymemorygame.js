@@ -34,6 +34,9 @@ if(!Array.indexOf){
     // keeps the matching ids = which elements match
     var matches = new Array();
     
+    // keep the inner html of the elements(to hide them from web inspector, etc)
+    var inHtml = new Array();
+    
     // a selector class for the cards
     var itemsClass = 'quizy-mg-item';
     
@@ -71,13 +74,13 @@ if(!Array.indexOf){
       if(numTotalClicks==0) gameTimer = setInterval(incTime,1000);
       // counts the clicks
       numTotalClicks ++;
-      // calls the unbind function (makes the button inactive)
-      unbindClick($(this));
-      showItem($(this));
       // keeps the class for the clicked item
       var tId = $(this).attr('id');
       var tdIdNum = parseInt(tId.substring(itemsClass.length,tId.length));
       var tClass = matches[tdIdNum];
+      // calls the unbind function (makes the button inactive)
+      unbindClick($(this));
+      showItem($(this),tdIdNum);
       // if it's the first click out of two (turning the first card)
       if(numClicks==0){
         numClicks ++ ;
@@ -147,8 +150,9 @@ if(!Array.indexOf){
     }
     
     // shows item with different animation/based on settings
-    var showItem = function(el){
+    var showItem = function(el,id){
       var topId = el.children('div.quizy-mg-item-top').attr('id');
+      addInHTML(el,id);
       switch(opts.animType){
         default:
         case 'fade':
@@ -175,15 +179,24 @@ if(!Array.indexOf){
         default:
         case 'fade':
           $('#'+topId).delay(delayShow).fadeIn(opts.animSpeed);
+          setTimeout( function(){
+            removeInHTML(el)
+          }, delayShow+opts.animSpeed);
         break;
         case 'flip':
           setTimeout( function(){
            el.revertFlip();
           }, delayShow);
+          setTimeout( function(){
+           removeInHTML(el);
+          }, delayShow+opts.animSpeed*4);
         break;
         case 'scroll':
           $('#'+topId).delay(delayShow).
                       animate({height: 'toggle', opacity:1},opts.animSpeed);
+          setTimeout( function(){
+            removeInHTML(el)
+            }, delayShow+opts.animSpeed);
         break;
       }      
     }
@@ -207,6 +220,17 @@ if(!Array.indexOf){
       numSeconds ++;
     }
     
+    // function for adding the inner HTMK
+    var addInHTML = function(el,id){
+      el.children('.quizy-mg-item-bottom')
+        .children('.mgcard-show')
+        .html(inHtml[id]);
+    }
+    
+    var removeInHTML = function(el){
+      el.children('.quizy-mg-item-bottom').children('.mgcard-show').html('');
+    }
+    
     
     // MAIN CODE **************************************************************
     // ************************************************************************
@@ -217,9 +241,11 @@ if(!Array.indexOf){
     // makes the div wrapper big enough
     $(this).css({height:rowNum*(h+m)+'px'});
     
-    // creates an array for randomising the items
+    // creates an array for randomising the items 
+    // and creates an empty inner html array
     var ranArr = Array();
     for(var j=0; j< itemsNum; j++){
+      inHtml[j] = '';
       ranArr.push(j);
     }
     
@@ -242,11 +268,15 @@ if(!Array.indexOf){
       var l = xRatio*(w+m);
       var t = yRatio*(h+m);
       
+      // Adds the innerHtml to the array
+      inHtml[j] = inEl.html();
+      // console.log(j, inEl.html());
+      
       // appends the cards to the element
       $(this).append('<div id="'+itemsClass+j+'" class="'+itemsClass+
       '" style="width:'+
       w+'px; height:'+h+'px; left:'+l+'px; top:'+t+'px">' +
-      '<div class="quizy-mg-item-bottom"><div class="mgcard-show">'+ inEl.html() +
+      '<div class="quizy-mg-item-bottom"><div class="mgcard-show">'+
       '</div></div><div id="quizy-mg-item-top'+j+
       '" class="quizy-mg-item-top" style="width:'+
       w+'px; height:'+h+'px;"></div></div>');
