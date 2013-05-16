@@ -152,13 +152,16 @@ if(!Array.indexOf){
     // shows item with different animation/based on settings
     var showItem = function(el,id){
       var topId = el.children('div.quizy-mg-item-top').attr('id');
-      addInHTML(el,id);
       switch(opts.animType){
         default:
         case 'fade':
+          addInHTML(el,id);
           $('#'+topId).fadeOut(opts.animSpeed);
         break;
         case 'flip':
+          setTimeout( function(){
+            addInHTML(el,id)
+          }, opts.animSpeed*2);
           el.flip({
             direction:opts.flipAnim,
             speed: opts.animSpeed,
@@ -167,6 +170,7 @@ if(!Array.indexOf){
           });
         break;
         case 'scroll':
+          addInHTML(el,id);
           $('#'+topId).animate({height: 'toggle', opacity:0.3},opts.animSpeed);
         break;
       }
