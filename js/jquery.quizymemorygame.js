@@ -155,22 +155,22 @@ if(!Array.indexOf){
       switch(opts.animType){
         default:
         case 'fade':
-          addInHTML(el,id);
+          addInFullHTML(el,id);
           $('#'+topId).fadeOut(opts.animSpeed);
         break;
         case 'flip':
-          setTimeout( function(){
-            addInHTML(el,id)
-          }, opts.animSpeed*2);
           el.flip({
             direction:opts.flipAnim,
             speed: opts.animSpeed,
             content: el.children('div.quizy-mg-item-bottom'),
-            color:'#777'
+            color:'#777',
+            onEnd: function(){
+              addInHTML(el,id);
+            }
           });
         break;
         case 'scroll':
-          addInHTML(el,id);
+          addInFullHTML(el,id);
           $('#'+topId).animate({height: 'toggle', opacity:0.3},opts.animSpeed);
         break;
       }
@@ -182,10 +182,9 @@ if(!Array.indexOf){
       switch(opts.animType){
         default:
         case 'fade':
-          $('#'+topId).delay(delayShow).fadeIn(opts.animSpeed);
-          setTimeout( function(){
-            removeInHTML(el)
-          }, delayShow+opts.animSpeed);
+          $('#'+topId).delay(delayShow).fadeIn(opts.animSpeed, function(){
+            removeInHTML(el);
+          });
         break;
         case 'flip':
           setTimeout( function(){
@@ -197,10 +196,10 @@ if(!Array.indexOf){
         break;
         case 'scroll':
           $('#'+topId).delay(delayShow).
-                      animate({height: 'toggle', opacity:1},opts.animSpeed);
-          setTimeout( function(){
-            removeInHTML(el)
-            }, delayShow+opts.animSpeed);
+                      animate({height: 'toggle', opacity:1},opts.animSpeed, 
+                      function(){
+                        removeInHTML(el);
+                      });
         break;
       }      
     }
@@ -225,9 +224,14 @@ if(!Array.indexOf){
     }
     
     // function for adding the inner HTMK
-    var addInHTML = function(el,id){
+    var addInFullHTML = function(el,id){
       el.children('.quizy-mg-item-bottom')
         .children('.mgcard-show')
+        .html(inHtml[id]);
+    }
+    
+    var addInHTML = function(el,id){
+      el.children('.mgcard-show')
         .html(inHtml[id]);
     }
     
