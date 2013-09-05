@@ -1,7 +1,12 @@
 // ***
 //  Memory game plugin for jQuery
 //  Author: Yane Frenski
+//  https://github.com/frenski/quizy-memorygame
+//
+//  (c) 2012-2013 http://yane.fr/
+//  MIT licensed
 // ***
+
 
 // IE hack for indexOf
 if(!Array.indexOf){

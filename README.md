@@ -74,4 +74,9 @@ Create a <div> element with the same id ('my-memorygame') as we used in the acti
 * textSummaryTime: The same as the previous but used for the text indicating the time to complete.
 * onFinishCall: A callback function. Will return object with two parameters: clicks and time. You can add it when calling the plugin like this: onFinishCall: function(param){alert(param.clicks)}
 
+
+### License ###
+
+This plugin is [MIT](http://en.wikipedia.org/wiki/MIT_License) licensed.
+
 </body>
