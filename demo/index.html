@@ -37,6 +37,8 @@
   
   <div id="main" role="main">
     
+    <div id="restart">restart</div>
+    
     <div id="tutorial-memorygame" class="quizy-memorygame">
       <ul>
           <li class="match1">
@@ -89,7 +91,11 @@
   <script src="../js/jquery.quizymemorygame.js"></script>
   
   <script>
-    $('#tutorial-memorygame').quizyMemoryGame({itemWidth: 156, itemHeight: 156, itemsMargin:40, colCount:4, animType:'flip' , flipAnim:'tb', animSpeed:250, resultIcons:true });
+    var quizyParams = {itemWidth: 156, itemHeight: 156, itemsMargin:40, colCount:4, animType:'flip' , flipAnim:'tb', animSpeed:250, resultIcons:true }; 
+    $('#tutorial-memorygame').quizyMemoryGame(quizyParams);
+    $('#restart').click(function(){
+      $('#tutorial-memorygame').quizyMemoryGame('restart');
+    });
   </script>
 
 </body>

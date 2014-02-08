@@ -23,6 +23,8 @@ if(!Array.indexOf){
 
 (function($) {
   
+  var initData = ''; // Later enable to change this on the fly
+  var initOpts = {}
   
   var methods = {
     
@@ -30,6 +32,10 @@ if(!Array.indexOf){
         
         // VARIABLES **************************************************************
         // ************************************************************************
+        
+        // Keeps the record of the initial items and options
+        initData = $(this).html();
+        initOpts = options;
 
         // gets the parameters
         var opts = $.extend({}, $.fn.quizyMemoryGame.defaults, options);
@@ -284,7 +290,6 @@ if(!Array.indexOf){
 
           // Adds the innerHtml to the array
           inHtml[j] = inEl.html();
-          // console.log(j, inEl.html());
 
           // appends the cards to the element
           $(this).append('<div id="'+itemsClass+j+'" class="'+itemsClass+
@@ -302,7 +307,7 @@ if(!Array.indexOf){
         }
 
         // removes the initial <li> elements
-        $(this).children('ul').remove();
+        // $(this).children('ul').remove();
 
         // adds the icons for the result after each match
         if(opts.resultIcons){
@@ -318,7 +323,7 @@ if(!Array.indexOf){
                       opts.itemsMargin/2;
           $('div.quizy-mg-notification-fly').css({top:yMid+'px',left:xMid+'px'});
         }
-
+        
         // Appends game summary div if set in the opts.
         if(opts.gameSummary){
           $(this).append('<div id="quizy-game-summary"><div id="gs-column1">'+
@@ -337,20 +342,21 @@ if(!Array.indexOf){
             $(this).remove();
           });
         }
-
+        
         // adds the click event to each element
         $('.quizy-mg-item').click(handleClick);
         
 
       },
       
-      destroy : function( ) {  
-        
+      destroy : function( ) {
+        $(this).empty();
       },
       
       restart: function( ){
-        methods.destroy();
-        methods.init();
+        methods.destroy.apply( this );
+        $(this).append(initData);
+        methods.init.call( this, initOpts );
       }
       
   };
@@ -359,7 +365,7 @@ if(!Array.indexOf){
   $.fn.quizyMemoryGame = function(optionsMethods) {
     
     if ( methods[optionsMethods] ) {
-        return methods[ optionsMethods ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+        return methods[ optionsMethods ].apply( this, arguments);
     } else if ( typeof optionsMethods === 'object' || ! optionsMethods ) {
         return methods.init.apply( this, arguments );
     } else {
