@@ -429,7 +429,13 @@ if(!Array.indexOf){
     * replayButtonText:  The text to appear on the replay button
     * closeButtonText:   The text to appear on the close button
     * onFinishCall:      The call back function
-                         It sends two arguments: clicks and time. 
+                         It sends two arguments: clicks and time.
+                         
+    ***** METHODS ************************************************************
+    
+    * init:             initializes the plug
+    * destroy:          destroys the plug
+    * reset:            resets the game
                          
   ****************************************************************************/
   
