@@ -245,100 +245,108 @@ if(!Array.indexOf){
     }
     
     
-    // MAIN CODE **************************************************************
+    // MAIN INIT FUNCTION *****************************************************
     // ************************************************************************
     
-    // hides the <li> items
-    $(this).children('ul').hide();
-    
-    // makes the div wrapper big enough
-    $(this).css({height:rowNum*(h+m)+'px'});
-    
-    // creates an array for randomising the items 
-    // and creates an empty inner html array
-    var ranArr = Array();
-    for(var j=0; j< itemsNum; j++){
-      inHtml[j] = '';
-      ranArr.push(j);
+    this.init = function(){
+      
+      // hides the <li> items
+      $(this).children('ul').hide();
+
+      // makes the div wrapper big enough
+      $(this).css({height:rowNum*(h+m)+'px'});
+
+      // creates an array for randomising the items 
+      // and creates an empty inner html array
+      var ranArr = Array();
+      for(var j=0; j< itemsNum; j++){
+        inHtml[j] = '';
+        ranArr.push(j);
+      }
+
+      // Generates all the elements, based on the data in the <li> elements
+      var i=0;
+      while(i<itemsNum){
+
+        // randozises the card - picks an item with a random key and
+        // removes it from the random array
+        var pick = Math.floor(Math.random()*ranArr.length);
+        var j = ranArr[pick];
+        ranArr.splice(pick,1);
+
+        // gets the data from each <li> element
+        var inEl = $(this).children('ul').children('li').eq(j);
+
+        // calculates the position of each element
+        var xRatio = (i+opts.colCount)%opts.colCount;
+        var yRatio = Math.floor(i/opts.colCount);
+        var l = xRatio*(w+m);
+        var t = yRatio*(h+m);
+
+        // Adds the innerHtml to the array
+        inHtml[j] = inEl.html();
+        // console.log(j, inEl.html());
+
+        // appends the cards to the element
+        $(this).append('<div id="'+itemsClass+j+'" class="'+itemsClass+
+        '" style="width:'+
+        w+'px; height:'+h+'px; left:'+l+'px; top:'+t+'px">' +
+        '<div class="quizy-mg-item-bottom"><div class="mgcard-show">'+
+        '</div></div><div id="quizy-mg-item-top'+j+
+        '" class="quizy-mg-item-top" style="width:'+
+        w+'px; height:'+h+'px;"></div></div>');
+        i++;
+
+        // Adds the element match id to the array of matches
+        matches[j] = inEl.attr('class');
+
+      }
+
+      // removes the initial <li> elements
+      $(this).children('ul').remove();
+
+      // adds the icons for the result after each match
+      if(opts.resultIcons){
+        $(this).append('<div id="quizy-mg-msgwrong"'+
+        ' class="quizy-mg-notification-fly quizy-mg-notification-fly-neg"></div>'+
+        '<div id="quizy-mg-msgcorrect" class="quizy-mg-notification-fly '+
+        ' quizy-mg-notification-fly-pos"></div>');
+        // positions the result icons in the middle of the div wrapper
+        var xMid = $(this).width()/2 - 
+                    $('div.quizy-mg-notification-fly').width()/2;
+        var yMid = $(this).height()/2 - 
+                    $('div.quizy-mg-notification-fly').height()/2 -
+                    opts.itemsMargin/2;
+        $('div.quizy-mg-notification-fly').css({top:yMid+'px',left:xMid+'px'});
+      }
+
+      // Appends game summary div if set in the opts.
+      if(opts.gameSummary){
+        $(this).append('<div id="quizy-game-summary"><div id="gs-column1">'+
+                        opts.textSummaryTitle+
+                        '</div><div id="gs-column2"></div>'+
+                        '<div id="gs-column3"></div></div>');
+        // positions the summary div in the middle of the div wrapper
+        var xMid = $(this).width()/2 - 
+                    $('div#quizy-game-summary').width()/2;
+        var yMid = $(this).height()/2 - 
+                    $('div#quizy-game-summary').height()/2 -
+                    opts.itemsMargin/2;
+        $('div#quizy-game-summary').css({top:yMid+'px',left:xMid+'px'});
+        // adds a click event to the summary div to be removed on click
+        $('div#quizy-game-summary').click(function(){
+          $(this).remove();
+        });
+      }
+
+      // adds the click event to each element
+      $('.quizy-mg-item').click(handleClick);
+      
     }
     
-    // Generates all the elements, based on the data in the <li> elements
-    var i=0;
-    while(i<itemsNum){
-      
-      // randozises the card - picks an item with a random key and
-      // removes it from the random array
-      var pick = Math.floor(Math.random()*ranArr.length);
-      var j = ranArr[pick];
-      ranArr.splice(pick,1);
-      
-      // gets the data from each <li> element
-      var inEl = $(this).children('ul').children('li').eq(j);
-      
-      // calculates the position of each element
-      var xRatio = (i+opts.colCount)%opts.colCount;
-      var yRatio = Math.floor(i/opts.colCount);
-      var l = xRatio*(w+m);
-      var t = yRatio*(h+m);
-      
-      // Adds the innerHtml to the array
-      inHtml[j] = inEl.html();
-      // console.log(j, inEl.html());
-      
-      // appends the cards to the element
-      $(this).append('<div id="'+itemsClass+j+'" class="'+itemsClass+
-      '" style="width:'+
-      w+'px; height:'+h+'px; left:'+l+'px; top:'+t+'px">' +
-      '<div class="quizy-mg-item-bottom"><div class="mgcard-show">'+
-      '</div></div><div id="quizy-mg-item-top'+j+
-      '" class="quizy-mg-item-top" style="width:'+
-      w+'px; height:'+h+'px;"></div></div>');
-      i++;
-      
-      // Adds the element match id to the array of matches
-      matches[j] = inEl.attr('class');
-      
-    }
     
-    // removes the initial <li> elements
-    $(this).children('ul').remove();
+    this.init();
     
-    // adds the icons for the result after each match
-    if(opts.resultIcons){
-      $(this).append('<div id="quizy-mg-msgwrong"'+
-      ' class="quizy-mg-notification-fly quizy-mg-notification-fly-neg"></div>'+
-      '<div id="quizy-mg-msgcorrect" class="quizy-mg-notification-fly '+
-      ' quizy-mg-notification-fly-pos"></div>');
-      // positions the result icons in the middle of the div wrapper
-      var xMid = $(this).width()/2 - 
-                  $('div.quizy-mg-notification-fly').width()/2;
-      var yMid = $(this).height()/2 - 
-                  $('div.quizy-mg-notification-fly').height()/2 -
-                  opts.itemsMargin/2;
-      $('div.quizy-mg-notification-fly').css({top:yMid+'px',left:xMid+'px'});
-    }
-    
-    // Appends game summary div if set in the opts.
-    if(opts.gameSummary){
-      $(this).append('<div id="quizy-game-summary"><div id="gs-column1">'+
-                      opts.textSummaryTitle+
-                      '</div><div id="gs-column2"></div>'+
-                      '<div id="gs-column3"></div></div>');
-      // positions the summary div in the middle of the div wrapper
-      var xMid = $(this).width()/2 - 
-                  $('div#quizy-game-summary').width()/2;
-      var yMid = $(this).height()/2 - 
-                  $('div#quizy-game-summary').height()/2 -
-                  opts.itemsMargin/2;
-      $('div#quizy-game-summary').css({top:yMid+'px',left:xMid+'px'});
-      // adds a click event to the summary div to be removed on click
-      $('div#quizy-game-summary').click(function(){
-        $(this).remove();
-      });
-    }
-    
-    // adds the click event to each element
-    $('.quizy-mg-item').click(handleClick);
     
   }
   
