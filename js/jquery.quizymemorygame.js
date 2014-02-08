@@ -307,7 +307,7 @@ if(!Array.indexOf){
         }
 
         // removes the initial <li> elements
-        // $(this).children('ul').remove();
+        $(this).children('ul').remove();
 
         // adds the icons for the result after each match
         if(opts.resultIcons){
@@ -326,22 +326,44 @@ if(!Array.indexOf){
         
         // Appends game summary div if set in the opts.
         if(opts.gameSummary){
-          $(this).append('<div id="quizy-game-summary"><div id="gs-column1">'+
+          
+          var gameEl = $(this);
+          
+          gameEl.append('<div id="quizy-game-summary"><div class="gs-column" id="gs-column1">'+
                           opts.textSummaryTitle+
-                          '</div><div id="gs-column2"></div>'+
-                          '<div id="gs-column3"></div></div>');
+                          '</div><div class="gs-column" id="gs-column2"></div>'+
+                          '<div class="gs-column" id="gs-column3"></div>'+
+                          '<div class="quizy-game-clear"></div></div>');
           // positions the summary div in the middle of the div wrapper
-          var xMid = $(this).width()/2 - 
+          var xMid = gameEl.width()/2 - 
                       $('div#quizy-game-summary').width()/2;
-          var yMid = $(this).height()/2 - 
+          var yMid = gameEl.height()/2 - 
                       $('div#quizy-game-summary').height()/2 -
                       opts.itemsMargin/2;
           $('div#quizy-game-summary').css({top:yMid+'px',left:xMid+'px'});
-          // adds a click event to the summary div to be removed on click
-          $('div#quizy-game-summary').click(function(){
-            $(this).remove();
+          
+          // Appends replay but if set in the opts.
+          if(opts.replayButton){
+            $('#quizy-game-summary').append('<div id="gs-replaybut">'+
+                                            opts.replayButtonText+'</div>');
+          }
+          
+          // Appends the close button
+          $('#quizy-game-summary').append('<div id="gs-closebut">'+
+                                          opts.closeButtonText+'</div>');
+          
+          // adds a click event to the close button to be removed on click
+          $('div#gs-closebut').click(function(){
+            $(this).parent().fadeOut();
           });
+          
+          // adds a click event to the replay button
+          $('div#gs-replaybut').click(function(){
+            gameEl.quizyMemoryGame('restart');
+          });
+          
         }
+        
         
         // adds the click event to each element
         $('.quizy-mg-item').click(handleClick);
@@ -401,12 +423,17 @@ if(!Array.indexOf){
                          indicating the clicks done.
     * textSummaryTime:   The same as the previous but used for the text 
                          indicating the time to complete.
+    * replayButton:      At the end of the game the at the bottom of the summary
+                         popup a replay button can be shown
+                         Can be true or false
+    * replayButtonText:  The text to appear on the replay button
+    * closeButtonText:   The text to appear on the close button
     * onFinishCall:      The call back function
                          It sends two arguments: clicks and time. 
                          
   ****************************************************************************/
   
-  $.fn.quizyMemoryGame.defaults = {itemWidth: 156, itemHeight: 156, itemsMargin:10, colCount:4, animType:'scroll', animSpeed:250, openDelay:2500, flipAnim:'rl', resultIcons:true, gameSummary:true, textSummaryTitle:'Your game summary', textSummaryClicks:'clicks', textSummaryTime:'seconds', onFinishCall:''}
+  $.fn.quizyMemoryGame.defaults = {itemWidth: 156, itemHeight: 156, itemsMargin:10, colCount:4, animType:'scroll', animSpeed:250, openDelay:2500, flipAnim:'rl', resultIcons:true, gameSummary:true, textSummaryTitle:'Your game summary', replayButton:true, replayButtonText:'Replay', closeButtonText:'Close', textSummaryClicks:'clicks', textSummaryTime:'seconds', onFinishCall:''}
   
   
 })(jQuery);

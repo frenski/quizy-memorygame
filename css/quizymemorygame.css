@@ -56,17 +56,17 @@
 /* styles for the game summary */
 #quizy-game-summary {
   width:300px;
-  height:120px;
+  height:160px;
   position:absolute;
   z-index:1001;
   background: #515b69;
   box-shadow: rgba(0,0,0,0.7) 0 0 4px, inset 0 0 20px rgba(0, 0, 0, 0.4);;
   border:1px solid #000;
-  cursor:pointer;
   display:none;
+  text-align: center;
 }
 
-#quizy-game-summary div{
+#quizy-game-summary div.gs-column{
   width:75px;
   float:left;
   padding:10px 0 10px 20px;
@@ -91,3 +91,29 @@
   padding-top: 65px;
   background:url('img/mg-clickicon.png') no-repeat 70% 25%;
 }
+
+
+#quizy-game-summary #gs-closebut,
+#quizy-game-summary #gs-replaybut{
+  display: inline-block;
+  margin-top: 10px;
+  width: 70px;
+  padding: 10px;
+  text-align: center;
+  background: #D7EEF0;
+  cursor: pointer;
+}
+
+#quizy-game-summary #gs-closebut:hover, 
+#quizy-game-summary #gs-replaybut:hover{
+  background: #fff;
+}
+
+#quizy-game-summary #gs-replaybut{
+  margin-right: 20px;
+}
+
+.quizy-game-clear{
+  clear: both;
+}
+

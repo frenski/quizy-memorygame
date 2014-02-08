@@ -12,6 +12,7 @@
   <style>
     body{
       font-family:Helvetica, Arial, Verdana;
+      text-align: center;
     }
     
     #tutorial-memorygame{
@@ -28,6 +29,10 @@
       line-height:24pt;
     }
     
+    .reset-button{
+      margin: 0 0 1.5em 0;
+    }
+    
   </style>
 
 </head>
@@ -36,8 +41,6 @@
   <h1>QuizY jQuery memory plugin</h1>
   
   <div id="main" role="main">
-    
-    <div id="restart">restart</div>
     
     <div id="tutorial-memorygame" class="quizy-memorygame">
       <ul>
@@ -80,6 +83,11 @@
       </ul>
     </div>
     
+    
+    <div class="reset-button">
+      <a id="restart" href="">Reset game</a>
+    </div>
+    
     <div>Flag icons for this demo - by <a href="http://www.gosquared.com/liquidicity/archives/1493" target="_blank">James Gill</a></div>
 
 
@@ -95,6 +103,7 @@
     $('#tutorial-memorygame').quizyMemoryGame(quizyParams);
     $('#restart').click(function(){
       $('#tutorial-memorygame').quizyMemoryGame('restart');
+      return false;
     });
   </script>
 
