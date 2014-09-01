@@ -78,6 +78,7 @@ if(!Array.indexOf){
         var h = opts.itemHeight;
         var m = opts.itemsMargin;
         var rowNum = Math.ceil(itemsNum/opts.colCount);
+        var random = opts.randomised;
         
         // FUNCTIONS **************************************************************
         // ************************************************************************
@@ -261,23 +262,30 @@ if(!Array.indexOf){
         // makes the div wrapper big enough
         $(this).css({height:rowNum*(h+m)+'px'});
 
-        // creates an array for randomising the items 
+        // creates an array for randomising the items (if randomised is true)
         // and creates an empty inner html array
-        var ranArr = Array();
-        for(var j=0; j< itemsNum; j++){
-          inHtml[j] = '';
-          ranArr.push(j);
-        }
+				if(random){
+					var ranArr = Array();
+	        for(var j=0; j< itemsNum; j++){
+	          inHtml[j] = '';
+	          ranArr.push(j);
+	        }
+				}
 
         // Generates all the elements, based on the data in the <li> elements
+				var j=0;
         var i=0;
         while(i<itemsNum){
 
           // randozises the card - picks an item with a random key and
-          // removes it from the random array
-          var pick = Math.floor(Math.random()*ranArr.length);
-          var j = ranArr[pick];
-          ranArr.splice(pick,1);
+          // removes it from the random array (if randomised is true)
+					if(random){
+          	var pick = Math.floor(Math.random()*ranArr.length);
+          	j = ranArr[pick];
+          	ranArr.splice(pick,1);
+					}else{
+						j = i;
+					}
 
           // gets the data from each <li> element
           var inEl = $(this).children('ul').children('li').eq(j);
@@ -439,7 +447,7 @@ if(!Array.indexOf){
                          
   ****************************************************************************/
   
-  $.fn.quizyMemoryGame.defaults = {itemWidth: 156, itemHeight: 156, itemsMargin:10, colCount:4, animType:'scroll', animSpeed:250, openDelay:2500, flipAnim:'rl', resultIcons:true, gameSummary:true, textSummaryTitle:'Your game summary', replayButton:true, replayButtonText:'Replay', closeButtonText:'Close', textSummaryClicks:'clicks', textSummaryTime:'seconds', onFinishCall:''}
+  $.fn.quizyMemoryGame.defaults = {itemWidth: 156, itemHeight: 156, itemsMargin:10, colCount:4, animType:'scroll', animSpeed:250, openDelay:2500, flipAnim:'rl', resultIcons:true, gameSummary:true, randomised:true, textSummaryTitle:'Your game summary', replayButton:true, replayButtonText:'Replay', closeButtonText:'Close', textSummaryClicks:'clicks', textSummaryTime:'seconds', onFinishCall:''}
   
   
 })(jQuery);
