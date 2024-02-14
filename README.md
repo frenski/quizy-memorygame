@@ -20,7 +20,7 @@ Download the [plugin](https://github.com/frenski/quizy-memorygame) and include a
 ...
 </body>
 ```
-Add the css file to the head: 
+Add the css file to the head:
 
 ```html
 <head>
@@ -73,6 +73,7 @@ Create a <div> element with the same id ('my-memorygame') as we used in the acti
 * textSummaryClicks: The same as the previous but used for the text indicating the clicks done.
 * textSummaryTime: The same as the previous but used for the text indicating the time to complete.
 * onFinishCall: A callback function. Will return object with two parameters: clicks and time. You can add it when calling the plugin like this: onFinishCall: function(param){alert(param.clicks)}
+* onLoadCall: A callback function which is triggereed when the elements have been loaded and added to the DOM.
 
 
 ### License ###

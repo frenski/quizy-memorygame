@@ -22,17 +22,17 @@ if(!Array.indexOf){
 
 
 (function($) {
-  
+
   var initData = ''; // Later enable to change this on the fly
   var initOpts = {}
-  
+
   var methods = {
-    
+
       init : function(options) {
-        
+
         // VARIABLES **************************************************************
         // ************************************************************************
-        
+
         // Keeps the record of the initial items and options
         initData = $(this).html();
         initOpts = options;
@@ -79,7 +79,7 @@ if(!Array.indexOf){
         var m = opts.itemsMargin;
         var rowNum = Math.ceil(itemsNum/opts.colCount);
         var random = opts.randomised;
-        
+
         // FUNCTIONS **************************************************************
         // ************************************************************************
 
@@ -211,12 +211,12 @@ if(!Array.indexOf){
             break;
             case 'scroll':
               $('#'+topId).delay(delayShow).
-                          animate({height: 'toggle', opacity:1},opts.animSpeed, 
+                          animate({height: 'toggle', opacity:1},opts.animSpeed,
                           function(){
                             removeInHTML(el);
                           });
             break;
-          }      
+          }
         }
 
         //shows and hids the correct/wrong message after an action
@@ -253,7 +253,7 @@ if(!Array.indexOf){
         var removeInHTML = function(el){
           el.children('.quizy-mg-item-bottom').children('.mgcard-show').html('');
         }
-        
+
         // MAIN INIT **************************************************************
         // ************************************************************************
         // hides the <li> items
@@ -324,76 +324,78 @@ if(!Array.indexOf){
           '<div id="quizy-mg-msgcorrect" class="quizy-mg-notification-fly '+
           ' quizy-mg-notification-fly-pos"></div>');
           // positions the result icons in the middle of the div wrapper
-          var xMid = $(this).width()/2 - 
+          var xMid = $(this).width()/2 -
                       $('div.quizy-mg-notification-fly').width()/2;
-          var yMid = $(this).height()/2 - 
+          var yMid = $(this).height()/2 -
                       $('div.quizy-mg-notification-fly').height()/2 -
                       opts.itemsMargin/2;
           $('div.quizy-mg-notification-fly').css({top:yMid+'px',left:xMid+'px'});
         }
-        
+
         // Appends game summary div if set in the opts.
         if(opts.gameSummary){
-          
+
           var gameEl = $(this);
-          
+
           gameEl.append('<div id="quizy-game-summary"><div class="gs-column" id="gs-column1">'+
                           opts.textSummaryTitle+
                           '</div><div class="gs-column" id="gs-column2"></div>'+
                           '<div class="gs-column" id="gs-column3"></div>'+
                           '<div class="quizy-game-clear"></div></div>');
           // positions the summary div in the middle of the div wrapper
-          var xMid = gameEl.width()/2 - 
+          var xMid = gameEl.width()/2 -
                       $('div#quizy-game-summary').width()/2;
-          var yMid = gameEl.height()/2 - 
+          var yMid = gameEl.height()/2 -
                       $('div#quizy-game-summary').height()/2 -
                       opts.itemsMargin/2;
           $('div#quizy-game-summary').css({top:yMid+'px',left:xMid+'px'});
-          
+
           // Appends replay but if set in the opts.
           if(opts.replayButton){
             $('#quizy-game-summary').append('<div id="gs-replaybut">'+
                                             opts.replayButtonText+'</div>');
           }
-          
+
           // Appends the close button
           $('#quizy-game-summary').append('<div id="gs-closebut">'+
                                           opts.closeButtonText+'</div>');
-          
+
           // adds a click event to the close button to be removed on click
           $('div#gs-closebut').click(function(){
             $(this).parent().fadeOut();
           });
-          
+
           // adds a click event to the replay button
           $('div#gs-replaybut').click(function(){
             gameEl.quizyMemoryGame('restart');
           });
-          
+
         }
-        
-        
+
         // adds the click event to each element
         $('.quizy-mg-item').click(handleClick);
-        
+
+        if(opts.onLoadCall!=''){
+          opts.onLoadCall();
+        }
 
       },
-      
+
       destroy : function( ) {
         $(this).empty();
       },
-      
+
       restart: function( ){
         methods.destroy.apply( this );
         $(this).append(initData);
         methods.init.call( this, initOpts );
       }
-      
+
   };
-  
-  
+
+
   $.fn.quizyMemoryGame = function(optionsMethods) {
-    
+
     if ( methods[optionsMethods] ) {
         return methods[ optionsMethods ].apply( this, arguments);
     } else if ( typeof optionsMethods === 'object' || ! optionsMethods ) {
@@ -401,12 +403,12 @@ if(!Array.indexOf){
     } else {
         $.error( 'Method ' +  optionsMethods + ' does not exist on jQuery.tooltip' );
     }
-    
+
   }
-  
+
   /**** plugin parameters *****************************************************
   *****************************************************************************
-  
+
     * itemWidth:         The width of the card in pixels.
     * itemHeight:        The width of the card in pixels.
                          Don't forget to change the style of the element in
@@ -414,7 +416,7 @@ if(!Array.indexOf){
     * itemsMargin:       The right and bottom margin of the element defining
                          the margin between the cards.
     * colCount:          In how many columns the plugin should arrange the cards
-    * animType:          The type of animation used when a card is clicked. 
+    * animType:          The type of animation used when a card is clicked.
                          Can be 'flip', 'fade' and 'scroll'.
     * flipAnim:          The direction of the flip animation, if chosen in the
                          previous property.Possible values: 'tb', 'bt', 'lr', 'rl'
@@ -423,31 +425,33 @@ if(!Array.indexOf){
     * resultIcons:       After turning each to pairs the plugin shows an icon
                          if it was correct or not. Can be true or false
     * gameSummary:       At the end of the game the plugin shows a short game
-                         summary - how many clicks the user has done and how 
-                         much time it took to complete the game. 
+                         summary - how many clicks the user has done and how
+                         much time it took to complete the game.
                          Can be true or false
     * textSummaryTitle:  The title of the summary text at the end of the game
-    * textSummaryClicks: The same as the previous but used for the text 
+    * textSummaryClicks: The same as the previous but used for the text
                          indicating the clicks done.
-    * textSummaryTime:   The same as the previous but used for the text 
+    * textSummaryTime:   The same as the previous but used for the text
                          indicating the time to complete.
     * replayButton:      At the end of the game the at the bottom of the summary
                          popup a replay button can be shown
                          Can be true or false
     * replayButtonText:  The text to appear on the replay button
     * closeButtonText:   The text to appear on the close button
-    * onFinishCall:      The call back function
+    * onLoadCall:        A callback function which is triggereed when the
+                         elements have been loaded and added to the DOM.
+    * onFinishCall:      A callback function triggered at the end of the quiz.
                          It sends two arguments: clicks and time.
-                         
+
     ***** METHODS ************************************************************
-    
+
     * init:             initializes the plug
     * destroy:          destroys the plug
     * reset:            resets the game
-                         
+
   ****************************************************************************/
-  
-  $.fn.quizyMemoryGame.defaults = {itemWidth: 156, itemHeight: 156, itemsMargin:10, colCount:4, animType:'scroll', animSpeed:250, openDelay:2500, flipAnim:'rl', resultIcons:true, gameSummary:true, randomised:true, textSummaryTitle:'Your game summary', replayButton:true, replayButtonText:'Replay', closeButtonText:'Close', textSummaryClicks:'clicks', textSummaryTime:'seconds', onFinishCall:''}
-  
-  
+
+  $.fn.quizyMemoryGame.defaults = {itemWidth: 156, itemHeight: 156, itemsMargin:10, colCount:4, animType:'scroll', animSpeed:250, openDelay:2500, flipAnim:'rl', resultIcons:true, gameSummary:true, randomised:true, textSummaryTitle:'Your game summary', replayButton:true, replayButtonText:'Replay', closeButtonText:'Close', textSummaryClicks:'clicks', textSummaryTime:'seconds', onFinishCall:'', onLoadCall:''}
+
+
 })(jQuery);

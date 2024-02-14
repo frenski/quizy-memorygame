@@ -8,18 +8,18 @@
 
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="../css/quizymemorygame.css">
-  
+
   <style>
     body{
       font-family:Helvetica, Arial, Verdana;
       text-align: center;
     }
-    
+
     #tutorial-memorygame{
       margin:auto;
       width:780px;
     }
-    
+
     .text-style1{
       font-size:14pt;
       color:#56605f;
@@ -28,20 +28,20 @@
       margin:0;
       line-height:24pt;
     }
-    
+
     .reset-button{
       margin: 0 0 1.5em 0;
     }
-    
+
   </style>
 
 </head>
 <body>
-  
+
   <h1>QuizY jQuery memory plugin</h1>
-  
+
   <div id="main" role="main">
-    
+
     <div id="tutorial-memorygame" class="quizy-memorygame">
       <ul>
           <li class="match1">
@@ -82,24 +82,34 @@
           </li>
       </ul>
     </div>
-    
-    
+
+
     <div class="reset-button">
       <a id="restart" href="">Reset game</a>
     </div>
-    
+
     <div>Flag icons for this demo - by <a href="http://www.gosquared.com/liquidicity/archives/1493" target="_blank">James Gill</a></div>
 
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../js/jquery-1.7.1.min.js"><\/script>')</script>
   <script src="../js/jquery-ui-1.8.17.custom.min.js"></script>
-  
+
   <script src="../js/jquery.flip.min.js"></script>
   <script src="../js/jquery.quizymemorygame.js"></script>
-  
+
   <script>
-    var quizyParams = {itemWidth: 156, itemHeight: 156, itemsMargin:40, colCount:4, animType:'flip' , flipAnim:'tb', animSpeed:250, resultIcons:true, randomised:true }; 
+    var quizyParams = {
+      itemWidth: 156,
+      itemHeight: 156,
+      itemsMargin:40,
+      colCount:4,
+      animType:'flip',
+      flipAnim:'tb',
+      animSpeed:250,
+      resultIcons:true,
+      randomised:true
+    };
     $('#tutorial-memorygame').quizyMemoryGame(quizyParams);
     $('#restart').click(function(){
       $('#tutorial-memorygame').quizyMemoryGame('restart');
